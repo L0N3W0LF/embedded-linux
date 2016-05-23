@@ -1,0 +1,117 @@
+.wrapper
+{
+    position:relative;
+    width:960px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0;
+}
+h1.title
+{
+    color:White;
+    font-family:"Helvetica";
+    font-size:45px;
+    text-shadow:Black 4px 4px;
+}
+h2.subtitle
+{
+    margin-top:60px;
+    color:White;
+    font-family:"Helvetica";
+    font-size:25px;
+    font-style:italic;
+    text-shadow:Black 3px 3px;
+}
+body
+{
+    background-image:url("images/bg.jpg");
+    text-align:center;
+}
+table.cooltable
+{
+    border-style:groove;
+    border-width:thick;
+    border-color:Grey;
+    font-family:Courier;
+    margin-top:80px;
+    margin-bottom:20px;
+    margin-left:auto;
+    margin-right:auto;
+}
+td
+{
+    border-style:dashed;
+    border-width:thin;
+    width:200px;
+    border-color:Grey;
+    color:White;
+    font-size:20px;
+    padding:5px;
+}
+th
+{
+    border-style:groove;
+    border-width:thin;
+    border-color:White;
+    color:White;
+    font-size:35px;
+    padding:0px;
+}
+.header
+{
+    overflow:hidden;
+    position:absolute;
+    top:-40px;
+    left:-20px;
+    z-index:-1;
+}
+.cooldropdown
+{
+    width:240px;
+    height:34px;
+    overflow:hidden;
+    border:1px solid #ccc;
+    font-family:arial;
+    font-size:20px;
+}
+
+.coolbutton
+{
+    -moz-box-shadow:inset 0px 1px 0px 0px #f29c93;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #f29c93;
+    box-shadow:inset 0px 1px 0px 0px #f29c93;
+    background-color:#fe1a00;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border-radius:6px;
+    margin-left:15px;
+    width:320px;
+    border:1px solid #d83526;
+    display:inline-block;
+    color:#ffffff;
+    font-family:arial;
+    font-size:20px;
+    font-weight:bold;
+    padding:4px 9px;
+    text-decoration:none;
+    text-shadow:1px 1px 0px #b23e35;
+    filter:mask();
+}.coolbutton:hover
+{
+	background-color:#ce0100;
+}.coolbutton:active
+{
+    position:relative;
+    top:1px;
+}
+.unselectable
+{
+    -moz-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -o-user-select:none;
+}
+.disabled
+{
+    display:none;
+}

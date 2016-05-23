@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Gamepad Controller</title>
+        <link rel="stylesheet" type="text/css" href="darktheme.css">
+        <link href="images/favicon.ico" rel="icon" type="image/x-icon">
+        <script type="text/javascript">
+            window.onload = refreshState;
+
+            // Array for the names of the elements for each button.
+            var buttonNames = new Array("logo","a","b","x","y","up","down","left","right","start","back","lpress","rpress","lb","rb","ltrig","rtrig");
+
+            function httpPost() {
+                var xmlHttp = null;
+                var postData = "getstate=1";
+                var numOfButtons = 15;  // Number of 1byte states
+
+                xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = function() {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    if (xmlHttp.responseText != "DeviceDisconnected") {
+                        // Make sure the content is showing properly.
+                        document.getElementById("hiddertitle").className = "disabled";
+                        document.getElementById("hidder").className = "";
+
+                        // Response Format:
+                        // Name:  logo:a:b:x:y:up:down:left:right:start:back:lpress:rpress:lb:rb:ltrig:rtrig.
+                        // Bytes:    1:1:1:1:1: 1:   1:   1:    1:    1:   1:     1:     1: 1: 1:    3:    3.
+
+                        // Show the state of all 1 byte buttons.
+                        for (var i = 0; i < numOfButtons; i++) {
+                            var state = xmlHttp.responseText.substr(i,1);
+                            if (state != 0) {
+                                document.getElementById(buttonNames[i]).innerHTML = "Pressed";
+                            } else {
+                                document.getElementById(buttonNames[i]).innerHTML = "";
+                            }
+                        }
+                        // Show the left trigger + intensity of press.
+                        var lstate = xmlHttp.responseText.substr(numOfButtons,3);
+                        if (lstate != 0) {
+                            document.getElementById(buttonNames[numOfButtons]).innerHTML = "Pressed ("+lstate+")";
+                        } else {
+                            document.getElementById(buttonNames[numOfButtons]).innerHTML = "";
+                        }
+                        // Show the left trigger + intensity of press.
+                        var rstate = xmlHttp.responseText.substr(numOfButtons+3,3);
+                        if (rstate != 0) {
+                            document.getElementById(buttonNames[numOfButtons+1]).innerHTML = "Pressed ("+rstate+")";
+                        } else {
+                            document.getElementById(buttonNames[numOfButtons+1]).innerHTML = "";
+                        }
+                    } else {
+                        // Hide the content and tell user to connect device.
+                        document.getElementById("hidder").className = "disabled";
+                        document.getElementById("hiddertitle").className = "";
+                    }
+                    }
+                }
+                xmlHttp.open("POST", "/cgi-bin/gamepad.cgi", true);
+                xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlHttp.send(postData);
+            }
+
+            function refreshState() {
+                setInterval("httpPost();", 100);
+            }
+        </script>
+    </head>
+    <body class="unselectable">
+    <div class="wrapper">
+        <h1 id="title" class="title">Gamepad Controller:</h1>
+        <div id="hiddertitle" class="disabled">
+            <h2 class="subtitle">Please connect the gamepad controller</h2>
+        </div>
+        <div class="header">
+            <img class="headimage" src="images/rytlock.png" width="1000" height="300">
+        </div>
+
+        <div id="hidder" class="">
+            <form name="input" action="/cgi-bin/gamepad.cgi" method="post" target="outputframe">
+                <select name="ledpattern" class="cooldropdown">
+                    <option value="0">All Off</option>
+                    <option value="1" selected>All Blinking</option>
+                    <option value="2">Flash 1</option>
+                    <option value="3">Flash 2</option>
+                    <option value="4">Flash 3</option>
+                    <option value="5">Flash 4</option>
+                    <option value="6">Turn 1 On</option>
+                    <option value="7">Turn 2 On</option>
+                    <option value="8">Turn 3 On</option>
+                    <option value="9">Turn 4 On</option>
+                    <option value="10">Rotating</option>
+                    <option value="11">Blinking*</option>
+                    <option value="12">Slow Blinking</option>
+                    <option value="13">Alternating</option>
+                </select>
+                <input type="submit" value="Change Led Pattern" class="coolbutton">
+            </form>
+
+            <form name="input" action="/cgi-bin/gamepad.cgi" method="post" target="outputframe">
+                <select name="lrumble" class="cooldropdown">
+                    <option value="0" selected>Off</option>
+                    <option value="50">Nearly Off</option>
+                    <option value="100">Slow</option>
+                    <option value="150">Fast</option>
+                    <option value="200">Faster</option>
+                    <option value="255">Speed Of Light</option>
+                </select>
+                <input type="submit" value="Change Light Rumbler Speed" class="coolbutton">
+            </form>
+
+            <form name="input" action="/cgi-bin/gamepad.cgi" method="post" target="outputframe">
+                <select name="hrumble" class="cooldropdown">
+                    <option value="0" selected>Off</option>
+                    <option value="50">Nearly Off</option>
+                    <option value="100">Slow</option>
+                    <option value="150">Fast</option>
+                    <option value="200">Faster</option>
+                    <option value="255">Speed Of Light</option>
+                </select>
+                <input type="submit" value="Change Heavy Rumbler Speed" class="coolbutton">
+            </form>
+            <table class="cooltable">
+                <tr><td>LOGO</td><td id="logo"></td><td>START BUTTON</td><td id="start"></td></tr>
+                <tr><td>A BUTTON</td><td id="a"></td><td>BACK BUTTON</td><td id="back"></td></tr>
+                <tr><td>B BUTTON</td><td id="b"></td><td>LEFT PRESS</td><td id="lpress"></td></tr>
+                <tr><td>X BUTTON</td><td id="x"></td><td>RIGHT PRESS</td><td id="rpress"></td></tr>
+                <tr><td>Y BUTTON</td><td id="y"></td><td>LEFT BUTTON</td><td id="lb"></td></tr>
+                <tr><td>D-PAD UP</td><td id="up"></td><td>RIGHT BUTTON</td><td id="rb"></td></tr>
+                <tr><td>D-PAD DOWN</td><td id="down"></td><td>LEFT TRIGGER</td><td id="ltrig"></td></tr>
+                <tr><td>D-PAD LEFT</td><td id="left"></td><td>RIGHT TRIGGER</td><td id="rtrig"></td></tr>
+                <tr><td>D-PAD RIGHT</td><td id="right"></td><td>TURBO BUTTON</td><td id="turbo"></td></tr>
+            <table>
+            <iframe name="outputframe" src="" width="0px" height="0px" frameborder="0"></iframe>
+            </div>
+        </div>
+    </body>
+    <html>

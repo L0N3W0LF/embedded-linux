@@ -1,0 +1,2 @@
+#!bin/sh
+httpd -h /www -v
